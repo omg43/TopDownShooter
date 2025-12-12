@@ -753,6 +753,10 @@ PrefabInstance:
       propertyPath: m_config
       value: 
       objectReference: {fileID: 11400000, guid: 906cf91de9429fd4f988c28159b05361, type: 2}
+    - target: {fileID: 5961986916385506174, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
+      propertyPath: m_playerRotationCalculeter
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9029773898639263411, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
       propertyPath: m_targetMarker
       value: 

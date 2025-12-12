@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4044379e65e9adf49b0827111277115e, type: 3}
   m_Name: TargetSpellData
   m_EditorClassIdentifier: Assembly-CSharp::TargetSpellData
-  m_spellName: 
-  m_combination: 
+  m_spellName: FireBall
+  m_combination: 00000000
   m_vissableEffect: {fileID: 0}
-  m_speed: 0
+  m_efects:
+  - rid: 4491189723890450674
+  m_speed: 25
+  references:
+    version: 2
+    RefIds:
+    - rid: 4491189723890450674
+      type: {class: AttackEffect, ns: , asm: Assembly-CSharp}
+      data:
+        m_damage: 0

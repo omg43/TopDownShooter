@@ -9,8 +9,8 @@ public abstract class BaseSpellData : ScriptableObject
     [SerializeField] GameObject m_vissableEffect;
 
     //Effects
-    //[SerializeReferenceDropdown]
-    [SerializeReferenceDropdown] private IEffect[] m_efects;
+    [SerializeReferenceDropdown]
+    [SerializeReference] private IEffect[] m_efects;
 
     public string SpellName => m_spellName;
     public IReadOnlyList<ElemetType> Comination => m_combination;    
