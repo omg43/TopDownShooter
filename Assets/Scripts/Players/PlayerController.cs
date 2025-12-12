@@ -1,3 +1,4 @@
+using Assets.Scripts.Players;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,6 +13,8 @@ namespace Players
         [SerializeField] private PlayerConfig m_config;
         [SerializeField] private PlayerMovement m_playerMovement;
         [SerializeField] private NavMeshMouseResolver m_navMeshMouseResolver;
+
+        private PlayerRotationCalculeter m_playerRotationCalculeter;
 
         private void OnValidate()
         {
@@ -28,8 +31,12 @@ namespace Players
 
         private void Start()
         {
-            m_playerMovement.Initialize(m_config.speed);
-            m_navMeshMouseResolver.Initialize(Camera.main);
+            var camera = Camera.main;
+
+            m_playerRotationCalculeter = new PlayerRotationCalculeter(camera, transform);
+            m_playerMovement.Initialize(m_config.speed, m_config.angularSpeed);
+            m_navMeshMouseResolver.Initialize(camera);
+            
             SetupeCursore();
         }
 
@@ -38,11 +45,17 @@ namespace Players
             if (Mouse.current.rightButton.wasPressedThisFrame)
             {
                 Vector3 mousePosition = Mouse.current.position.ReadValue();
-                Vector3? navPoint = m_navMeshMouseResolver.GetNavMeshPoint(mousePosition);
+                var lookPoint = m_playerRotationCalculeter.Calculate(mousePosition);
+                m_playerMovement.RotationTowards(lookPoint);
 
-                if (navPoint.HasValue)
+                if (Mouse.current.rightButton.wasPressedThisFrame)
                 {
-                    m_playerMovement.SetDestination(navPoint.Value);
+                    
+                    Vector3? navPoint = m_navMeshMouseResolver.GetNavMeshPoint(mousePosition);
+                    if (navPoint.HasValue)
+                    {
+                        m_playerMovement.SetDestination(navPoint.Value);
+                    }
                 }
             }
         }

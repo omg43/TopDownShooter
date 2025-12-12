@@ -11,7 +11,7 @@ namespace Players
         [SerializeField][Min(0)] private float m_angularSpeed;
         
         public float speed => m_speed;
-
+        public float angularSpeed => m_angularSpeed;
         public Texture2D cursoreTexture => m_cursoreTexture;
     }
 }
