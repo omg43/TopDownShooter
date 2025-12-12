@@ -30,6 +30,7 @@ namespace Players
         {
             m_playerMovement.Initialize(m_config.speed);
             m_navMeshMouseResolver.Initialize(Camera.main);
+            SetupeCursore();
         }
 
         private void Update()
@@ -43,6 +44,16 @@ namespace Players
                 {
                     m_playerMovement.SetDestination(navPoint.Value);
                 }
+            }
+        }
+
+        private void SetupeCursore()
+        {
+            var texture = m_config.cursoreTexture;
+            if (texture)
+            {
+                var hotspot = new Vector2(texture.width/2f, texture.height/2f);
+                Cursor.SetCursor(texture, hotspot ,CursorMode.Auto);
             }
         }
     }

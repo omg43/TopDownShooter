@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Players.PlayerMovement
   m_agent: {fileID: 7403516892261329839}
+  m_targetMarker: {fileID: 0}
 --- !u!114 &5961986916385506174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5fc5ff16bb64884eb513aa42f9e7b16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Players.PlayerController
+  m_config: {fileID: 11400000, guid: 906cf91de9429fd4f988c28159b05361, type: 2}
   m_playerMovement: {fileID: 9029773898639263411}
   m_navMeshMouseResolver: {fileID: 1736720529609624105}
 --- !u!114 &1736720529609624105
