@@ -42,11 +42,11 @@ namespace Players
 
         private void Update()
         {
+            Vector3 mousePosition = Mouse.current.position.ReadValue();
+            var lookPoint = m_playerRotationCalculeter.Calculate(mousePosition);
+            m_playerMovement.RotationTowards(lookPoint);
             if (Mouse.current.rightButton.wasPressedThisFrame)
             {
-                Vector3 mousePosition = Mouse.current.position.ReadValue();
-                var lookPoint = m_playerRotationCalculeter.Calculate(mousePosition);
-                m_playerMovement.RotationTowards(lookPoint);
 
                 if (Mouse.current.rightButton.wasPressedThisFrame)
                 {
