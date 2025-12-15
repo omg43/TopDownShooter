@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "TargetSpellData", menuName = "ScriptableObject/Spels/Non Target Spell")]
 public class NonTargetSpellData : BaseSpellData
 {
     [SerializeField][Min(0)] private float m_range;

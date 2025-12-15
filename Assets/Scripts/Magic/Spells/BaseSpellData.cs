@@ -19,7 +19,7 @@ public abstract class BaseSpellData : ScriptableObject
 
     private void OnValidate()
     {
-        if(m_combination.Length > 1)
+        if(m_combination.Length > 3)
         {
             m_combination = m_combination.Take(3).ToArray();
         }
