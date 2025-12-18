@@ -8,16 +8,16 @@ using UnityEngine.UIElements;
 public class SpellPreporation : MonoBehaviour
 {
     public event Action OverflowOccurred;
-    public Action<IReadOnlyList<ElemetType>> ElementsChanged;
+    public Action<IReadOnlyList<ElementType>> ElementsChanged;
 
     private MagicConfig m_magicConfig;
-    private List<ElemetType> m_elements = new();
+    private List<ElementType> m_elements = new();
 
     public SpellPreporation(MagicConfig magicConfig)
     {
         m_magicConfig = magicConfig;
     }
-    public void AddElement(ElemetType elemetType)
+    public void AddElement(ElementType elemetType)
     {
         if(m_elements.Count >= m_magicConfig.maxElements)
         {
@@ -31,21 +31,25 @@ public class SpellPreporation : MonoBehaviour
         }
     }
 
-    public bool TryGetSpell(out SpellDataBase spell)
+    public bool TryGetSpell(out BaseSpellData spell)
     {
         spell = null;
-        if(m_elements.Count is 0)
+        if (m_elements.Count is 0)
         {
             return false;
         }
-        foreach (var spellData in m_magicConfig.spellDataBase.m_spellData)
+        foreach (var spellData in m_magicConfig.spellDataBase.spellDatas)
         {
-            //if
-            //if true
-            spell = m_spellData;
+            if (IsMatchingCombination(spellData.Combination))
+            {
+                spell = spellData;
+                return true;
+            }
         }
+
+        return false;
     }
-    public bool IsMatchingCombination(IReadOnlyList<ElemetType> combination)
+    public bool IsMatchingCombination(IReadOnlyList<ElementType> combination)
     {
         if(combination.Count != m_elements.Count)
         {
@@ -60,8 +64,9 @@ public class SpellPreporation : MonoBehaviour
         }
          return true;
     }
-    private void Clear()
+    public void Clear()
     {
-
+        m_elements.Clear();
+        ElementsChanged?.Invoke(m_elements);
     }
 }

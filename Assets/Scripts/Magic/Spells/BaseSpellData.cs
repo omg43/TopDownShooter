@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class BaseSpellData : ScriptableObject
 {
     [SerializeField] private string m_spellName;
-    [SerializeField] private ElemetType[] m_combination;
+    [SerializeField] private ElementType[] m_combination;
     [SerializeField] GameObject m_vissableEffect;
 
     //Effects
@@ -13,7 +13,7 @@ public abstract class BaseSpellData : ScriptableObject
     [SerializeReference] private IEffect[] m_efects;
 
     public string SpellName => m_spellName;
-    public IReadOnlyList<ElemetType> Comination => m_combination;    
+    public IReadOnlyList<ElementType> Combination => m_combination;    
     public GameObject VissableEffect => m_vissableEffect;
 
 

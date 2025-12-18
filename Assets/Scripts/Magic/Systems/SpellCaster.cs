@@ -17,12 +17,12 @@ public class SpellCaster
         }
         switch (spell)
         {
-            case SelfSpellData selfData: CastSelf(); break;
-            case TargetSpellData targetData: CastTarget(); break;
-            case NonTargetSpellData nonTargetData: CastNonTarget(); break;
-            case AoeSpellData aoeSpellData:
+            case SelfSpellData selfSpell: CastSelf(selfSpell); break;
+            case TargetSpellData targetSpell: CastTarget(targetSpell,worldPosition); break;
+            case NonTargetSpellData nonTarget: CastNonTarget(nonTarget); break;
+            case AoeSpellData aoeSpell:
                 {
-                    CastAoe(aoeSpellData, aoeSpellData.isTarget
+                    CastAoe(aoeSpell, aoeSpell.isTarget
                         ? worldPosition
                         : m_casterTransform.position);
                     break;
@@ -36,6 +36,6 @@ public class SpellCaster
     
     private void CastNonTarget(NonTargetSpellData spell) { }
     
-    private void CastAoe(NonTargetSpellData spell, Vector3 worldPosition) { }
+    private void CastAoe(AoeSpellData spell, Vector3 worldPosition) { }
 }
 

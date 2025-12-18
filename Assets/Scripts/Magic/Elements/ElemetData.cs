@@ -13,11 +13,11 @@ public sealed class ElemetData : ScriptableObject
     public sealed class Item
     {
         [SerializeField] private string m_elementName;
-        [SerializeField] private ElemetType m_type;
+        [SerializeField] private ElementType m_type;
         [SerializeField] private Sprite m_icon;
 
         public String elementName => m_elementName;
-        public ElemetType type => m_type;
+        public ElementType type => m_type;
         public Sprite icon => m_icon;
 
     }

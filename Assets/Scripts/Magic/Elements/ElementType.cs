@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ElemetType
+public enum ElementType
 {
     Element1,
     Element2,
