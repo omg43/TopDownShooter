@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 1194452070895403066}
   - component: {fileID: 9029773898639263411}
   - component: {fileID: 5961986916385506174}
+  - component: {fileID: 4460491263216863131}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -234,6 +235,26 @@ MonoBehaviour:
   m_config: {fileID: 11400000, guid: 906cf91de9429fd4f988c28159b05361, type: 2}
   m_playerMovement: {fileID: 9029773898639263411}
   m_navMeshMouseResolver: {fileID: 0}
+  m_magicInputHelper:
+    m_magicSystem: {fileID: 4460491263216863131}
+    m_element1Key: 31
+    m_element2Key: 37
+    m_element3Key: 19
+    m_element4Key: 32
+--- !u!114 &4460491263216863131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2766789612775872371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72b0704a34605540b1701d381ba1711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MagicSystem
+  m_mouseResolver: {fileID: 0}
+  m_config: {fileID: 11400000, guid: ca60801bfdedb7f4fb5b02f71b0974f9, type: 2}
 --- !u!1 &5629388193467892882
 GameObject:
   m_ObjectHideFlags: 0

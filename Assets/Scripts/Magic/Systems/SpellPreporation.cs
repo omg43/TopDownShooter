@@ -1,11 +1,7 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Android;
-using UnityEngine.UIElements;
 
-public class SpellPreporation : MonoBehaviour
+public class SpellPreporation
 {
     public event Action OverflowOccurred;
     public Action<IReadOnlyList<ElementType>> ElementsChanged;

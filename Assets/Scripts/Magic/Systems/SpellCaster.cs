@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using Magic.Spells.Aoe;
-using Magic.Spells;
 using Magic.Spells.Projectiles;
 using Object = UnityEngine.Object;
 
