@@ -1,3 +1,4 @@
+using Assets.Scripts.Players;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,12 +9,13 @@ public class MagicSystem : MonoBehaviour
 {
     public event Action <MagicState> StateChanged;
     public event Action  SpellCanceled;
+
     public event Action<IReadOnlyList<ElementType>> ElementChanged
     {
         add => spellPreporation.ElementsChanged += value;
         remove => spellPreporation.ElementsChanged -= value;
     }
-
+    [SerializeField] private MouseResolver m_mouseResolver;
     [SerializeField] private MagicConfig m_config;
 
     private MagicState m_state;
@@ -24,7 +26,7 @@ public class MagicSystem : MonoBehaviour
     public MagicState state
     {
         get => m_state;
-        set
+        private set
         {
             if (m_state != value)
             {
@@ -98,7 +100,7 @@ public class MagicSystem : MonoBehaviour
         {
             state = MagicState.Casting;
 
-            m_caster.Cast(spell, Vector3.zero);
+            m_caster.Cast(spell, m_mouseResolver.GetCursorWorldPosition() ?? Vector3.zero); ;
 
             spellPreporation.Clear();
             state = MagicState.Idle;
