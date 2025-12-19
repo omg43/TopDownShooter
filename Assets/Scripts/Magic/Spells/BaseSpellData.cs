@@ -14,6 +14,7 @@ public abstract class BaseSpellData : ScriptableObject
 
     public string SpellName => m_spellName;
     public IReadOnlyList<ElementType> Combination => m_combination;    
+    public IReadOnlyList<IEffect> effects => m_efects;
     public GameObject VissableEffect => m_vissableEffect;
 
 

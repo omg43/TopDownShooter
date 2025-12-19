@@ -34,7 +34,7 @@ namespace Players
             var camera = Camera.main;
 
             m_playerRotationCalculeter = new PlayerRotationCalculeter(camera, transform);
-            m_playerMovement.Initialize(m_config.speed, m_config.angularSpeed);
+            m_playerMovement.Initialize(m_config.speed);
             m_navMeshMouseResolver.Initialize(camera);
             
             SetupeCursore();
