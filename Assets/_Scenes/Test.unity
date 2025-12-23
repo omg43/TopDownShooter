@@ -1118,7 +1118,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9029773898639263411, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
   m_PrefabInstance: {fileID: 2326979565783359616}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2326979565783359617}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83a5f39b2a144d03aa4db96810ca64ea, type: 3}
@@ -1197,13 +1197,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783899606}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1389374991}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1783899608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,14 +1473,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4460491263216863131, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
+      propertyPath: m_mouseResolver
+      value: 
+      objectReference: {fileID: 1994843330958421100}
     - target: {fileID: 5961986916385506174, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
       propertyPath: m_navMeshMouseResolver
       value: 
       objectReference: {fileID: 1994843330958421100}
-    - target: {fileID: 5961986916385506174, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
-      propertyPath: m_magicInputHelper.m_magicSystem
-      value: 
-      objectReference: {fileID: 2326979565783359618}
     - target: {fileID: 7538409507330096551, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1520,30 +1520,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2766789612775872371, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2326979565783359618}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
---- !u!1 &2326979565783359617 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2766789612775872371, guid: 8baf8e9cab547df47b22be905c2106ff, type: 3}
-  m_PrefabInstance: {fileID: 2326979565783359616}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2326979565783359618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2326979565783359617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f72b0704a34605540b1701d381ba1711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MagicSystem
-  m_mouseResolver: {fileID: 1994843330958421100}
-  m_config: {fileID: 11400000, guid: ca60801bfdedb7f4fb5b02f71b0974f9, type: 2}
 --- !u!1 &3363110554226035723
 GameObject:
   m_ObjectHideFlags: 0

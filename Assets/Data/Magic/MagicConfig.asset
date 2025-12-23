@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MagicConfig
   m_elemetData: {fileID: 11400000, guid: 166df30eb47eb9e4cbd35be77b13a1cc, type: 2}
   m_spellDataBase: {fileID: 11400000, guid: e1c8ceae435c7cf47ba94ace3256c894, type: 2}
-  m_spells: []
+  m_spells:
+  - {fileID: 11400000, guid: e1c8ceae435c7cf47ba94ace3256c894, type: 2}
   m_maxElements: 1
   m_camcelCooldown: 1
