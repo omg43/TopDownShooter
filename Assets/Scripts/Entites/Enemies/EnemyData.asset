@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625e5573074a78940bb1f87e7bcaf7eb, type: 3}
   m_Name: EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  <m_enemyType>k__BackingField: 0
-  <m_maxHealth>k__BackingField: 0
+  <m_enemyType>k__BackingField: 1
+  <m_maxHealth>k__BackingField: 12
   <m_speed>k__BackingField: 0
-  <m_coolDown>k__BackingField: 0
+  <m_coolDown>k__BackingField: 1
   <m_attckRange>k__BackingField: 0

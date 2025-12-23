@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public event Action<Enemy> Died;
     //TODO Add Movement
     [SerializeField] private HealthComponent m_health;
     [SerializeField] private EnemyData m_enemyData;
     private EnemyData m_data;
     private bool m_initialized;
+
+    public IHealth Health => m_health;
 
     private void Awake()
     {
@@ -21,7 +24,7 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log($"Health Changed : {m_health.Value}");
         };
-        m_health.Died += OnDied();
+        m_health.Died += OnDied;
     }
 
     private void OnDisable()
@@ -35,8 +38,8 @@ public class Enemy : MonoBehaviour
         m_data = data;
         m_health.Initialize(data.m_maxHealth);
     }
-    private Action OnDied()
+    private void OnDied() 
     {
-        throw new NotImplementedException();
+         Died?.Invoke(this);
     }
 }
