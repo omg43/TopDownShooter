@@ -1,10 +1,11 @@
-using Magic;
 using UnityEngine;
-using System.Linq;
 using Magic.Systems;
+using Magic.Spells.Data;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using DG.Tweening;
+using System.Collections.Generic;
+using Magic.Elements;
+using System.Linq;
 
 namespace Magic.Views
 {
@@ -27,14 +28,14 @@ namespace Magic.Views
 
         private void OnEnable()
         {
-            m_magicSystem.ElementChanged += UpdateIcons;
-            m_magicSystem.SpellCanceled += ShakeContainer;
+            m_magicSystem.ElementsChanged += UpdateIcons;
+            m_magicSystem.SpellCancelled += ShakeContainer;
         }
 
         private void OnDisable()
         {
-            m_magicSystem.ElementChanged -= UpdateIcons;
-            m_magicSystem.SpellCanceled -= ShakeContainer;
+            m_magicSystem.ElementsChanged -= UpdateIcons;
+            m_magicSystem.SpellCancelled -= ShakeContainer;
         }
 
         private void UpdateIcons(IReadOnlyList<ElementType> elements)
@@ -71,7 +72,7 @@ namespace Magic.Views
                 .OnComplete(() => m_elementsContainer.localRotation = localRotation);
         }
 
-        private ElemetData.Item GetElementInfo(ElementType type) =>
-            m_config.elemetData.items.FirstOrDefault(item => item.type == type);
+        private ElementsData.Item GetElementInfo(ElementType type) =>
+            m_config.elementsData.Items.FirstOrDefault(item => item.type == type);
     }
 }

@@ -1,121 +1,132 @@
-using Assets.Scripts.Players;
+using Magic.Elements;
+using Players;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using Magic.Spells.Data;
 
-public class MagicSystem : MonoBehaviour
+namespace Magic.Systems
 {
-    public event Action <MagicState> StateChanged;
-    public event Action  SpellCanceled;
-
-    public event Action<IReadOnlyList<ElementType>> ElementChanged
+    public class MagicSystem: MonoBehaviour
     {
-        add => spellPreporation.ElementsChanged += value;
-        remove => spellPreporation.ElementsChanged -= value;
-    }
-    [SerializeField] private MouseResolver m_mouseResolver;
-    [SerializeField] private MagicConfig m_config;
+        public event Action<MagicState> StateChanged;
+        public event Action SpellCancelled;
 
-    private MagicState m_state;
-    private SpellCaster m_caster;
-    private SpellPreporation m_spellPreporation;
-    private Coroutine m_cooldownCoroutine;
-
-    public MagicState state
-    {
-        get => m_state;
-        private set
+        public event Action<IReadOnlyList<ElementType>> ElementsChanged
         {
-            if (m_state != value)
+            add => spellPreparation.ElementsChanged += value;
+            remove => spellPreparation.ElementsChanged -= value;
+        }
+
+        [SerializeField] private MagicConfig m_config;
+        [SerializeField] private MouseResolver m_mouseResolver;
+
+        private MagicState m_state;
+        private SpellCaster m_caster;
+        private Coroutine m_cooldownCoroutine;
+        private SpellPreparation m_spellPreparation;
+
+        public MagicState state
+        {
+            get => m_state;
+            private set
             {
-                m_state = value;
-                StateChanged?.Invoke(m_state);
+                if (m_state != value)
+                {
+                    m_state = value;
+                    StateChanged?.Invoke(m_state);
+                }
             }
         }
-    }
 
-    private SpellPreporation spellPreporation =>
-        m_spellPreporation ??= new SpellPreporation(m_config);
+        private SpellPreparation spellPreparation =>
+            m_spellPreparation ??= new SpellPreparation(m_config);
 
-    private void OnEnable() =>
-          spellPreporation.OverflowOccurred += CancleSpell;
-
-    private void OnDisable() =>
-          spellPreporation.OverflowOccurred -= CancleSpell;
-
-    private void Awake()
-    {
-        m_caster = new SpellCaster(transform);
-    }
-
-    private void CancleSpell()
-    {
-        if(state is MagicState.Preporation)
+        private void Awake()
         {
-            spellPreporation.Clear();
-            SpellCanceled?.Invoke();
-
-            StartCooldown();
-        }
-    }
-    
-    private void StartCooldown()
-    {
-        if (m_cooldownCoroutine is not null)
-        {
-            StopCoroutine(m_cooldownCoroutine);
+            m_caster = new SpellCaster(transform);
         }
 
-        m_cooldownCoroutine = StartCoroutine(CooldownRoutine());
-    }
-
-    private IEnumerator CooldownRoutine()
-    {
-        state = MagicState.Cooldown;
-        yield return new  WaitForSeconds(m_config.camcelCooldown);
-        state = MagicState.Idle;
-
-        m_cooldownCoroutine = null;
-    }
-
-    public void AddElement(ElementType element) 
-    {
-        if(state is MagicState.Cooldown or MagicState.Casting)
+        private void OnEnable()
         {
-            return;
+            spellPreparation.OverflowOccured += CancelSpell;
         }
-        m_spellPreporation.AddElement(element);
-        state = MagicState.Preporation;
-    }
-    public void TryCastSpell()
-    {
-        if (state is not MagicState.Preporation)
+        private void OnDisable()
         {
-            return;
+            spellPreparation.OverflowOccured -= CancelSpell;
         }
 
-        if (spellPreporation.TryGetSpell(out var spell))
+        public void AddElement(ElementType element)
         {
-            state = MagicState.Casting;
+            if (state is MagicState.Cooldown or MagicState.Casting)
+            {
+                return;
+            }
 
-            m_caster.Cast(spell, m_mouseResolver.GetCursorWorldPosition() ?? Vector3.zero); ;
+            spellPreparation.AddElement(element);
+            state = MagicState.Preparation;
+        }
 
-            spellPreporation.Clear();
+        public void TryCastSpell()
+        {
+            if (state is not MagicState.Preparation)
+            {
+                return;
+            }
+            
+            if (spellPreparation.TryGetSpell(out var spell))
+            {
+                state = MagicState.Casting;
+
+                // m_caster.Cast(spell, m_mouseResolver.m_mousePosition);
+                m_caster.Cast(spell, m_mouseResolver.GetCursorWorldPosition() ?? Vector3.zero);
+
+                spellPreparation.Clear();
+                state = MagicState.Idle;
+            }
+            else
+            {
+                CancelSpell();
+            }
+        }
+
+        private void CancelSpell()
+        {
+            if (state is MagicState.Preparation)
+            {
+                spellPreparation.Clear();
+                SpellCancelled?.Invoke();
+
+                m_cooldownCoroutine = StartCoroutine(CooldownRoutine());
+            }
+        }
+
+        private void StartCooldown()
+        {
+            if (m_cooldownCoroutine is not null)
+            {
+                StopCoroutine(m_cooldownCoroutine);
+            }
+
+            m_cooldownCoroutine = StartCoroutine(CooldownRoutine());
+        }
+
+        private IEnumerator CooldownRoutine()
+        {
+            state = MagicState.Cooldown;
+            yield return new WaitForSeconds(m_config.cancelCooldown);
             state = MagicState.Idle;
-        }
-        else
-        {
-            CancleSpell();
+
+            m_cooldownCoroutine = null;
         }
     }
+
     public enum MagicState
     {
         Idle,
-        Preporation,
+        Preparation, 
         Cooldown,
         Casting
     }
 }
-

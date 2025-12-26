@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7a5e2d11125e3e499d2af7c554ca812, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a5268160878877448277bdf3a9abea1, type: 3}
   m_Name: MagicConfig
-  m_EditorClassIdentifier: Assembly-CSharp::MagicConfig
-  m_elemetData: {fileID: 11400000, guid: 166df30eb47eb9e4cbd35be77b13a1cc, type: 2}
-  m_spellDataBase: {fileID: 11400000, guid: e1c8ceae435c7cf47ba94ace3256c894, type: 2}
-  m_spells:
-  - {fileID: 11400000, guid: e1c8ceae435c7cf47ba94ace3256c894, type: 2}
-  m_maxElements: 1
-  m_camcelCooldown: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Magic.Elements.MagicConfig
+  m_elementsData: {fileID: 11400000, guid: 368ace3193bbc4740a3045c9f06450de, type: 2}
+  m_spellDataBase: {fileID: 11400000, guid: 0ee8e3802b4c1fd4b91f3c7d0cbc577d, type: 2}
+  m_maxElements: 3
+  m_cancelCooldown: 0.3

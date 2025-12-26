@@ -1,5 +1,5 @@
-using DG.Tweening;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Markers
 {
@@ -12,19 +12,18 @@ namespace Markers
 
         [SerializeField] private Ease m_ease = Ease.InOutSine;
 
-        private Tweener _tween;
+        private Tweener m_tween;
 
         public void Show(Vector3 worldPosition)
         {
-            _tween?.Kill();
+            m_tween?.Kill();
 
             gameObject.SetActive(true);
 
             transform.position = worldPosition;
 
             transform.localScale = Vector3.one * m_startSize;
-
-            _tween = transform
+            m_tween = transform
                 .DOScale(Vector3.one * m_finishSize, m_duration)
                 .SetEase(m_ease)
                 .SetLoops(-1, LoopType.Yoyo);
@@ -32,8 +31,8 @@ namespace Markers
 
         public void Hide()
         {
-            _tween?.Kill();
-            _tween = null;
+            m_tween?.Kill();
+            m_tween = null;
 
             gameObject.SetActive(false);
         }

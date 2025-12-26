@@ -1,5 +1,6 @@
-using UnityEngine;
+using Magic.Effects;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Magic.Spells.Aoe
 {

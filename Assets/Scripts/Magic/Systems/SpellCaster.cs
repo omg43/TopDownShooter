@@ -1,85 +1,100 @@
+using Magic.Effects;
+using Magic.Spells.Aoe;
+using Magic.Spells.Data;
+using Magic.Spells.Projectiles;
 using System;
 using UnityEngine;
-using Magic.Spells.Aoe;
-using Magic.Spells.Projectiles;
 using Object = UnityEngine.Object;
 
-public class SpellCaster
+namespace Magic.Systems
 {
-    private Transform m_casterTransform;
-
-    public SpellCaster(Transform casterTransforrm)
+    public sealed class SpellCaster
     {
-        m_casterTransform = casterTransforrm;
-    }
+        private readonly Transform m_casterTransform;
 
-    public void Cast(BaseSpellData spell, Vector3 worldPosition)
-    {
-        if (!spell)
+        public SpellCaster(Transform casterTransform)
         {
-            return;
+            m_casterTransform = casterTransform;
         }
-        switch (spell)
+
+        public void Cast(BaseSpellData spell, Vector3 worldPosition)
         {
-            case SelfSpellData selfSpell: CastSelf(selfSpell); break;
-            case TargetSpellData targetSpell: CastTarget(targetSpell,worldPosition); break;
-            case NonTargetSpellData nonTarget: CastNonTarget(nonTarget); break;
-            case AoeSpellData aoeSpell:
+            if (!spell)
+            {
+                return;
+            }
+
+            switch (spell)
+            {
+                case SelfSpellData selfSpell: CastSelf(selfSpell); break;
+                case TargetSpellData targetSpell: CastTarget(targetSpell, worldPosition); break;
+                case NonTargetSpellData nonTargetSpell: CastNonTarget(nonTargetSpell); break;
+                case AoeSpellData aoeSpell:
                 {
-                    CastAoe(aoeSpell, aoeSpell.isTarget
-                        ? worldPosition
-                        : m_casterTransform.position);
+                    if (aoeSpell.isTarget)
+                    {
+                        CastAoe(aoeSpell, worldPosition);
+                    }
+                    else
+                    {
+                        CastAoe(aoeSpell, m_casterTransform.position);
+                    }
                     break;
                 }
-        }
-    }
-
-    private void CastSelf(SelfSpellData selfSpell) 
-    {
-        if (selfSpell.VissableEffect)
-        {
-            Object.Instantiate(selfSpell.VissableEffect, m_casterTransform.position, Quaternion.identity);
-        }
-
-        if (m_casterTransform.TryGetComponent<IEffectable>(out var effectable))
-        {
-            foreach (var effect in selfSpell.effects)
-            {
-                effect.Apply(effectable);
             }
         }
-    }
-    
-    private void CastTarget(TargetSpellData targetSpell, Vector3 worldPosition) 
-    {
-        if (!targetSpell.VissableEffect)
+
+        private void CastSelf(SelfSpellData selfSpell)
         {
-            throw new NullReferenceException("Target spell must have visualEffect");
+            if (selfSpell.visualEffect)
+            {
+                Object.Instantiate(selfSpell.visualEffect, m_casterTransform.position, Quaternion.identity);
+            }
+
+            if (m_casterTransform.TryGetComponent<IEffectable>(out var effectable))
+            {
+                foreach (var effect in selfSpell.effects)
+                {
+                    effect.Apply(effectable);
+                }
+            }
+        }
+        
+        private void CastTarget(TargetSpellData targetSpell, Vector3 worldPosition)
+        {
+            if (!targetSpell.visualEffect)
+            {
+                throw new NullReferenceException("Target spell must have visualEffect");
+            }
+
+            var projectile = Object.Instantiate(targetSpell.visualEffect, m_casterTransform.position, Quaternion.identity);
+
+            var spellProjectile =
+                projectile.GetComponent<ISpellProjectile>() ??
+                projectile.AddComponent<SpellProjectile>();
+
+            spellProjectile.Initialize(worldPosition, targetSpell.speed, targetSpell.effects);
         }
 
-        var projectile = Object.Instantiate(targetSpell.VissableEffect, m_casterTransform.position, Quaternion.identity);
-        var spellProjectile =
-            projectile.GetComponent<ISpellProjectile>() ??
-            projectile.AddComponent<SpellProjectile>();
+        private void CastNonTarget(NonTargetSpellData nonTargetSpell)
+        {
+            // in class
+        }
 
-        spellProjectile.Initialize(worldPosition, targetSpell.speed, targetSpell.effects);
-    }
-
-    private void CastNonTarget(NonTargetSpellData spell) { }
-    
-    private void CastAoe(AoeSpellData aoeSpell, Vector3 worldPosition) 
-    {
-        var aoe = aoeSpell.VissableEffect
-                ? Object.Instantiate(aoeSpell.VissableEffect, m_casterTransform.position, Quaternion.identity)
+        private void CastAoe(AoeSpellData aoeSpell, Vector3 worldPosition)
+        {
+            var aoe = aoeSpell.visualEffect
+                ? Object.Instantiate(aoeSpell.visualEffect, m_casterTransform.position, Quaternion.identity)
                 : new GameObject();
 
-        aoe.transform.position = worldPosition;
+            aoe.transform.position = worldPosition;
 
-        var spellAoe =
-            aoe.GetComponent<ISpellAoe>() ??
-            aoe.AddComponent<SpellAoe>();
+            var spellAoe =
+                aoe.GetComponent<ISpellAoe>() ??
+                aoe.AddComponent<SpellAoe>();
 
-        spellAoe.Initialize(worldPosition, aoeSpell.radius, aoeSpell.effects);
+            spellAoe.Initialize(worldPosition, aoeSpell.radius, aoeSpell.effects);
+        }
     }
 }
 

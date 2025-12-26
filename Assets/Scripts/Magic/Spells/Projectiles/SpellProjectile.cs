@@ -1,6 +1,7 @@
-using UnityEngine;
-using System.Collections.Generic;
+using Magic.Effects;
 using Players;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Magic.Spells.Projectiles
 {
@@ -25,7 +26,7 @@ namespace Magic.Spells.Projectiles
             }
         }
 
-        private void Awake()
+        private void Start()
         {
             m_rigidbody.useGravity = false;
 
@@ -36,13 +37,14 @@ namespace Magic.Spells.Projectiles
         {
             if (!m_initialized) return;
 
-            m_traveledDistance += m_speed * Time.fixedDeltaTime; 
+            m_traveledDistance += m_speed * Time.fixedDeltaTime;
+
             if (m_traveledDistance >= m_targetDistance)
             {
                 Destroy(gameObject);
             }
             else
-            { 
+            {
                 SetLinearVelocity();
             }
         }
@@ -51,6 +53,7 @@ namespace Magic.Spells.Projectiles
         {
             if (!m_initialized) return;
             if (other.GetComponent<PlayerController>()) return;
+
             if (other.TryGetComponent<IEffectable>(out var effectable))
                 ApplyEffects(effectable);
 
@@ -60,7 +63,7 @@ namespace Magic.Spells.Projectiles
         public void Initialize(Vector3 targetPosition, float speed, IReadOnlyList<IEffect> effects)
         {
             m_targetPosition = targetPosition;
-            m_targetPosition.y = transform.position.y;
+            // m_targetPosition.y = transform.position.y;
 
             m_speed = speed;
             m_effects = effects;
@@ -70,11 +73,11 @@ namespace Magic.Spells.Projectiles
             m_traveledDistance = 0f;
             m_targetDistance = Vector3.Distance(transform.position, m_targetPosition);
 
-            if (m_direction != Vector3.zero)
+            if (m_direction !=  Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(m_direction);
 
             m_initialized = true;
- 
+
             SetLinearVelocity();
         }
 
@@ -88,7 +91,7 @@ namespace Magic.Spells.Projectiles
             }
         }
 
-        private void SetLinearVelocity() =>
+        private void SetLinearVelocity() => 
             m_rigidbody.linearVelocity = m_direction * m_speed;
     }
 }

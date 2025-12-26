@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using UnityEngine;
+using Magic.Elements;
 using UnityEngine.InputSystem;
 
 namespace Magic.Systems
