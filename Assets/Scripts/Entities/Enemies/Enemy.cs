@@ -13,6 +13,7 @@ namespace Entities.Enemies
         [SerializeField] private AttackEnemySystem m_attackEnemySystem;
         [SerializeField] private HealthComponent m_health;
         [SerializeField] private EnemyStateMashine m_stateMashine;
+        [SerializeField] private EnemyMove enemyMove;
 
         private Transform m_player;
         public HealthComponent health => m_health;
@@ -38,6 +39,11 @@ namespace Entities.Enemies
             m_health.Initialize(data.health);
             m_attackEnemySystem.Inicialize(data.spell,playerTransform, data.attackTime);
             m_player = playerTransform;
+            enemyMove.Initialize();
+            if(m_enemyData.enemyType == AttackEnemyType.Melee)
+            {
+                m_stateMashine.ChangeState(EnemyState.Move);
+            }
         }
 
         private void UpdateState()
@@ -46,7 +52,10 @@ namespace Entities.Enemies
 
             switch (m_stateMashine.currentState)
             {
-                case EnemyState.Idle:HandIdleState
+                case EnemyState.Idle: HandleIdleState(isInAttackRange);break;
+                case EnemyState.Attack: HandleAttackState(isInAttackRange);break;
+                case EnemyState.Move: HandleMoveState(isInAttackRange);break;
+
             }
         }
 
@@ -58,11 +67,29 @@ namespace Entities.Enemies
             }
         }
 
-        private void HendleAttackState(bool isInAttackRange)
+        private void HandleMoveState(bool isInAttackRange)
+        {
+            if (m_enemyData.enemyType == AttackEnemyType.Melee)
+            {
+                m_stateMashine.ChangeState(EnemyState.Move);
+            }
+        }
+
+        private void HandleAttackState(bool isInAttackRange)
         {
             m_attackEnemySystem.TryAttack();
 
-            if(!)
+            if (!isInAttackRange)
+            {
+                if(m_enemyData.enemyType == AttackEnemyType.Melee)
+                {
+                    m_stateMashine.ChangeState(EnemyState.Move);
+                }
+                else
+                {
+                    m_stateMashine.ChangeState(EnemyState.Idle);
+                }
+            }
         }
 
         private bool IsInRange()
@@ -97,7 +124,14 @@ namespace Entities.Enemies
 
         public void OnStateChanger(EnemyState previsionState, EnemyState nextState)
         {
-
+            if(previsionState is EnemyState.Move)
+            {
+                enemyMove.StopMoving();
+            }
+            if(nextState is EnemyState.Move)
+            {
+                enemyMove.StartMoving();
+            }
         }
     }
 }

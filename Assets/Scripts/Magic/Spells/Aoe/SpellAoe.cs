@@ -8,17 +8,12 @@ namespace Magic.Spells.Aoe
     {
         public void Initialize(Vector3 targetPosition, float radius, IReadOnlyCollection<IEffect> effects)
         {
-            var colliders = Physics.OverlapSphere(targetPosition, radius);
+            var colliders = Physics.OverlapSphere(targetPosition, radius, this.gameObject.layer);
 
             foreach (var collider in colliders)
             {
-                if (collider.TryGetComponent<IEffectable>(out var effectable))
-                {
-                    foreach (var effect in effects)
-                    {
-                        effect.Apply(effectable);
-                    }
-                }
+                var effectable = collider.GetComponent<IEffectable>();
+                effects.ApplyEffects(effectable);
             }
         }
     }
