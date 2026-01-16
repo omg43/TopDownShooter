@@ -7,6 +7,7 @@ namespace Players
     [RequireComponent(typeof(PlayerMovement))]
     public class PlayerController : MonoBehaviour
     {
+        [SerializeField] private int m_health;
         [SerializeField] private PlayerConfig m_config;
         [SerializeField] private PlayerMovement m_playerMovement;
         [SerializeField] private MouseResolver m_mouseResolver;
