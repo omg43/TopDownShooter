@@ -13,19 +13,12 @@ namespace Magic.Systems
     {
         private readonly Transform m_casterTransform;
         private readonly bool m_isSingelSpell = false;
-        private readonly ObjectPool<GameObject> m_visualEffectPoint;
+        private ObjectPool<GameObject> m_visualEffectPool;
 
         public SpellCaster(Transform casterTransform, bool singelSpell = false)
         {
             m_casterTransform = casterTransform;
-            m_isSingelSpell = m_isSingelSpell;
-
-            if (!singelSpell)
-            {
-                m_visualEffectPoint = new ObjectPool<GameObject>(
-
-                    );
-            }
+            m_isSingelSpell = singelSpell;
         }
 
         public void Cast(BaseSpellData spell, Vector3 worldPosition)
@@ -60,16 +53,12 @@ namespace Magic.Systems
             if (selfSpell.visualEffect)
             {
                 var visualEffect = Object.Instantiate(selfSpell.visualEffect);
-                
+                SetLayer(visualEffect);
+
             }
 
-            if (m_casterTransform.TryGetComponent<IEffectable>(out var effectable))
-            {
-                foreach (var effect in selfSpell.effects)
-                {
-                    effect.Apply(effectable);
-                }
-            }
+            var effectables = m_casterTransform.GetComponents<IEffectable>();
+            selfSpell.effects.ApplyEffects(effectables);
         }
         
         private void CastTarget(TargetSpellData targetSpell, Vector3 worldPosition)
@@ -80,7 +69,7 @@ namespace Magic.Systems
             }
 
             var projectile = Object.Instantiate(targetSpell.visualEffect, m_casterTransform.position, Quaternion.identity);
-
+            SetLayer(projectile);
             var spellProjectile =
                 projectile.GetComponent<ISpellProjectile>() ??
                 projectile.AddComponent<SpellProjectile>();
@@ -88,29 +77,57 @@ namespace Magic.Systems
             spellProjectile.Initialize(worldPosition, targetSpell.speed, targetSpell.effects);
         }
 
-        private void CastNonTarget(NonTargetSpellData nonTargetSpell)
-        {
-            // in class
-        }
+        private void CastNonTarget(NonTargetSpellData nonTargetSpell){}
 
-        private void CastAoe(AoeSpellData aoeSpell, Vector3 worldPosition)
+        private void CastAoe(AoeSpellData spell, Vector3 worldPosition)
         {
-            if (!m_isSingelSpell)
+            GameObject aoe;
+
+            if (m_isSingelSpell)
             {
-                m_visualEffectPoint ?? = new ObjectPool<GameObject>( 
+                m_visualEffectPool ??= new ObjectPool<GameObject>(
+                    createFunc: Create,
+                    actionOnGet: gm => gm.SetActive(true),
+                    actionOnRelease: gm => gm.SetActive(false),
+                    actionOnDestroy: Object.Destroy);
 
-            var aoe = aoeSpell.visualEffect
-                ? Object.Instantiate(aoeSpell.visualEffect, m_casterTransform.position, Quaternion.identity)
-                : new GameObject();
+                aoe = m_visualEffectPool.Get();
+            }
+            else
+            {
+                aoe = Create();
+            }
 
+            SetLayer(aoe);
             aoe.transform.position = worldPosition;
+
 
             var spellAoe =
                 aoe.GetComponent<ISpellAoe>() ??
                 aoe.AddComponent<SpellAoe>();
 
-            spellAoe.Initialize(worldPosition, aoeSpell.radius, aoeSpell.effects);
+            spellAoe.Initialize(worldPosition, spell.radius, spell.effects);
+
+            if (m_isSingelSpell)
+            {
+                m_visualEffectPool.Release(aoe);
+            }
+            else
+            {
+                Object.Destroy(aoe);
+            }
+            return;
+
+
+            GameObject Create()
+            {
+                return spell.visualEffect
+                    ? Object.Instantiate(spell.visualEffect, m_casterTransform.position, Quaternion.identity)
+                : new GameObject();
+            }
         }
+        private void SetLayer(GameObject visualEffect) =>
+        visualEffect.layer = m_casterTransform.gameObject.layer;
     }
 }
 

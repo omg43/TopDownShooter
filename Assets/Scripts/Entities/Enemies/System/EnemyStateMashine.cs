@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEngine.CullingGroup;
 
 public class EnemyStateMashine 
 {
@@ -21,5 +22,7 @@ public class EnemyStateMashine
 
         var previuseState = currentState; 
         currentState = nextState;
+
+        StateChange?.Invoke(previuseState, currentState);
     }
 }

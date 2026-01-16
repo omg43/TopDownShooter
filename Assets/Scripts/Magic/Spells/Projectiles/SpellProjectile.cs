@@ -26,7 +26,7 @@ namespace Magic.Spells.Projectiles
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             m_rigidbody.useGravity = false;
 
@@ -37,7 +37,7 @@ namespace Magic.Spells.Projectiles
         {
             if (!m_initialized) return;
 
-            m_traveledDistance += m_speed * Time.fixedDeltaTime;
+            //m_traveledDistance += m_speed * Time.fixedDeltaTime;
 
             if (m_traveledDistance >= m_targetDistance)
             {
@@ -52,10 +52,8 @@ namespace Magic.Spells.Projectiles
         private void OnTriggerEnter(Collider other)
         {
             if (!m_initialized) return;
-            if (other.GetComponent<PlayerController>()) return;
 
-            if (other.TryGetComponent<IEffectable>(out var effectable))
-                ApplyEffects(effectable);
+            m_effects.ApplyEffects(other.GetComponent<IEffectable>());
 
             Destroy(gameObject);
         }
@@ -63,7 +61,7 @@ namespace Magic.Spells.Projectiles
         public void Initialize(Vector3 targetPosition, float speed, IReadOnlyList<IEffect> effects)
         {
             m_targetPosition = targetPosition;
-            // m_targetPosition.y = transform.position.y;
+            m_targetPosition.y = transform.position.y;
 
             m_speed = speed;
             m_effects = effects;
@@ -79,16 +77,6 @@ namespace Magic.Spells.Projectiles
             m_initialized = true;
 
             SetLinearVelocity();
-        }
-
-        private void ApplyEffects(IEffectable target)
-        {
-            if (m_effects is null) return;
-
-            foreach (var effect in m_effects)
-            {
-                effect?.Apply(target);
-            }
         }
 
         private void SetLinearVelocity() => 
