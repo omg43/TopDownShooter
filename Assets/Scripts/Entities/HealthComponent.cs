@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Entities
 {
-    internal class HealthComponent : MonoBehaviour, IHealth, IEffectable
+    public class HealthComponent : MonoBehaviour, IHealth, IEffectable
     {
         public event Action Died;
         public event Action ValueChanged;
@@ -23,39 +23,45 @@ namespace Entities
                 }
 
                 m_value = value < 0 ? 0 : value;
-
                 ValueChanged?.Invoke();
 
-                if (m_value == 0)
+                if (m_value is 0)
                 {
                     Died?.Invoke();
                 }
             }
-        }        
+        }
+
+        public float maxValue { get; private set; }
 
         public void Initialize(float value)
         {
             if (m_initialized)
             {
-                throw new InvalidOperationException("Уже инициализирован");
+                throw new InvalidOperationException("Health component is already initialized");
             }
 
-            m_initialized = true;            
-            m_value = value;
+            this.value = value;
+            maxValue = value;
+            m_initialized = true;
         }
 
-        public void Heal(float health)
+        public void Heal(float heal)
         {
-            if (health < 0)
-                throw new ArgumentOutOfRangeException(nameof(health), health, "Отрицательное куда");
+            if (heal < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(heal), heal, "Heal can not be negative");
+            }
 
-            value += health;
+            value += heal;
         }
 
         public void TakeDamage(float damage)
         {
             if (damage < 0)
-                throw new ArgumentOutOfRangeException(nameof(damage), damage, "Отрицательное куда");
+            {
+                throw new ArgumentOutOfRangeException(nameof(damage), damage, "Damage can not be negative");
+            }
 
             value -= damage;
         }

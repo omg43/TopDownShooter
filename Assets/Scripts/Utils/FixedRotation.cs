@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Utils
 {
-    internal class FixedRotation : MonoBehaviour
+    public class FixedRotation : MonoBehaviour
     {
         private Transform m_parent;
-        private Quaternion m_rotation;
         private Vector3 m_worldOffset;
+        private Quaternion m_rotation;
 
         private void Start()
         {
@@ -18,10 +18,14 @@ namespace Utils
 
         private void LateUpdate()
         {
-            if (m_parent == null) return;
+            if (!m_parent)
+            {
+                return;
+            }
 
             transform.position = m_parent.position + m_worldOffset;
-            transform.rotation = m_rotation;                   
+            transform.rotation = m_rotation;
         }
     }
 }
+

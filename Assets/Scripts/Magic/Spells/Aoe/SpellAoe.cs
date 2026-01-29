@@ -1,4 +1,5 @@
 using Magic.Effects;
+using Magic.Effects.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +9,17 @@ namespace Magic.Spells.Aoe
     {
         public void Initialize(Vector3 targetPosition, float radius, IReadOnlyCollection<IEffect> effects)
         {
-            var colliders = Physics.OverlapSphere(targetPosition, radius, this.gameObject.layer);
+            var colliders = Physics.OverlapSphere(targetPosition, radius, gameObject.layer);
 
             foreach (var collider in colliders)
             {
-                var effectable = collider.GetComponent<IEffectable>();
-                effects.ApplyEffects(effectable);
+                if (collider.gameObject.layer == gameObject.layer)
+                {
+                    continue;
+                }
+
+                var effectables = collider.GetComponents<IEffectable>();
+                effects.ApplyEffects(effectables);
             }
         }
     }
