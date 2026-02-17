@@ -10,17 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d4a24e6d2fc5a446a20eb724028a755, type: 3}
-  m_Name: FireballEnemySpell
+  m_Name: FireBallEnemySpell
   m_EditorClassIdentifier: Assembly-CSharp::Magic.Spells.Data.TargetSpellData
   m_spellName: Enemy Fireball
   m_visualEffect: {fileID: 1587250918974726, guid: a0fbc3331c879eb408b22e83f39d57fb, type: 3}
   m_combination: 
   m_effects:
   - rid: 5751289740089622599
+  - rid: 4050002000555016254
   m_speed: 10
   references:
     version: 2
     RefIds:
+    - rid: 4050002000555016254
+      type: {class: BuffEffect, ns: Magic.Effects, asm: Assembly-CSharp}
+      data:
+        m_buffs:
+        - rid: 4050002000555016255
+    - rid: 4050002000555016255
+      type: {class: PoisonDebuff, ns: Magic.Buffs.Impls, asm: Assembly-CSharp}
+      data:
+        <id>k__BackingField: Posion
+        <icon>k__BackingField: {fileID: 21300000, guid: efd259b63ed4a9f42adf43341b5a54d5, type: 3}
+        <type>k__BackingField: 0
+        m_duration: 8
+        m_interval: 1
+        m_damagePerSeconds: 2
     - rid: 5751289740089622599
       type: {class: AttackEffect, ns: Magic.Effects, asm: Assembly-CSharp}
       data:
