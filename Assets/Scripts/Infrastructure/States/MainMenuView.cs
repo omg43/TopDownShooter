@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuView : MonoBehaviour
@@ -23,7 +24,8 @@ public class MainMenuView : MonoBehaviour
 
     private void OnPlayClicked()
     {
-        throw new NotImplementedException();
+        PlayClicked?.Invoke();
+        SceneManager.LoadScene(GlobalConstants.Scenes.Game);
     }
 
     private void OnDisable()

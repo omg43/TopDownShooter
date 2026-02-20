@@ -1,3 +1,4 @@
+using Players;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class StateMashine : MonoBehaviour
     private IState m_state;
     private Dictionary<Type, IState> m_states = new();
 
-    public  void Initialize(IState[] states)
+    public void Initialize(IState[] states)
     {
         if (m_states.Count > 0) return;
 
@@ -18,7 +19,7 @@ public class StateMashine : MonoBehaviour
     }
 
     public void ChangedState<T>()
-        where T: IState
+        where T : IState
     {
         m_state?.Exit();
         {
@@ -101,6 +102,21 @@ public class StateMashine : MonoBehaviour
         public void Enter()
         {
             throw new NotImplementedException();
+        }
+
+        public void Exit()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class BoostrapState : MonoBehaviour, IState 
+    {
+        [SerializeField] private MouseResolver m_mouseResolver;
+
+        public void Enter()
+        {
+            ServiceLocator.Register(m_mouseResolver);
         }
 
         public void Exit()
