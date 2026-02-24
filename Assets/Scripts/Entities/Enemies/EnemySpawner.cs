@@ -26,6 +26,11 @@ namespace Entities.Enemies
 
         public void Spawn()
         {
+            var playerTransform = ServiceLocator
+                .Resolve<PlayerFactory>()
+                .Create()
+                .transform;
+
             foreach(var spawnPoint in m_spawnPoints)
             {
                 var enemy = GetEnemy();

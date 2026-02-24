@@ -8,6 +8,7 @@ namespace Infrastructure.States
     public class BootstrapState : MonoBehaviour, IState
     {
         [SerializeField] private MouseResolver m_mouseResolver;
+        [SerializeField] private PlayerSpawnPoint m_playerSpawnPoint;
 
         private StateMashine m_stateMachine;
 

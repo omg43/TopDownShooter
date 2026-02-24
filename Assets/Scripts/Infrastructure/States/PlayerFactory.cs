@@ -6,13 +6,20 @@ public interface IPlayerFactorySettings
     public Vector3 position {  get; set; }
 }
 
-public class PlayerFactory : IPlayerFactorySettings
+public interface IPlayerFactory
+{
+    public PlayerController Create();
+
+    public void Release();
+}
+
+public class PlayerFactory : IPlayerFactorySettings, IPlayerFactory
 {
     private PlayerController m_playerPref;
     private PlayerController m_playerInstance;
     private readonly string m_path;
 
-    Vector3 IPlayerFactorySettings.position { get; set; }
+    public Vector3 position { get; set; }
 
     public PlayerFactory(string mPath)
     {
@@ -40,6 +47,16 @@ public class PlayerFactory : IPlayerFactorySettings
     {
         Object.Destroy(controller.gameObject);
         m_playerInstance = null;
+    }
+
+    PlayerController IPlayerFactory.Create()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IPlayerFactory.Release()
+    {
+        throw new System.NotImplementedException();
     }
 }
 

@@ -69,12 +69,12 @@ public class StateMashine : MonoBehaviour
     }
     public class GamePlayState : IState
     {
-        private readonly StateMachine m_stateMachine;
+        private readonly StateMashine m_stateMachine;
         private readonly EnemySpawner m_enemySpawner;
         private readonly PlayerController m_playerController;
 
         public GamePlayState(
-            StateMachine stateMachine,
+            StateMashine stateMachine,
             EnemySpawner enemySpawner,
             PlayerController playerController)
         {
@@ -85,6 +85,14 @@ public class StateMashine : MonoBehaviour
 
         public void Enter()
         {
+            ServiceLocator.Register(m_mouse);
+
+            var playerFactory = new PlayerFactory("Prefabs/Player");
+
+            ServiceLocator.Resolve<IPlayerFactorySettings>().position = m_playerController;
+            ServiceLocator.Resolve<PlayerFactory>.Creat(playerFactory);
+
+            ServiceLocator.Register(m_playerController);
             m_enemySpawner.Spawn();
             m_playerController.health.Died += OnDied;
         }
@@ -94,10 +102,8 @@ public class StateMashine : MonoBehaviour
             m_playerController.health.Died -= OnDied;
         }
 
-        private void OnDied()
-        {
-            m_stateMachine.ChangedState<DeadState>();
-        }
+        private void OnDied() =>
+            m_stateMachine.ChangedState<MainMenuState>();
     }
     public class PauseMenuState : IState
     {
