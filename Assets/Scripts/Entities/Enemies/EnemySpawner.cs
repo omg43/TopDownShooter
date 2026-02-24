@@ -1,5 +1,6 @@
 ﻿using Entities.Enemies.Data;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
@@ -8,16 +9,11 @@ namespace Entities.Enemies
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private EnemyData[] m_data;
-        [SerializeField] private List<Enemy> m_currentEnemies;
         [SerializeField] private Enemy[] m_enemies;
         [SerializeField] private Transform[] m_spawnPoints;
         [SerializeField] private Transform m_playerTransform;
 
-        // TODO Remove
-        private void Start()
-        {
-            Spawn();
-        }
+        private List<Enemy> m_currentEnemies = new();
 
         public void DespawnAll()
         {
@@ -25,7 +21,7 @@ namespace Entities.Enemies
             {
                 DestroyEnemy(enemy);
             }
-            m_enemies.Clear();
+            m_currentEnemies.Clear();
         }
 
         public void Spawn()
@@ -39,6 +35,7 @@ namespace Entities.Enemies
                 enemyInstance.Initialize(enemyData, m_playerTransform);
 
                 enemyInstance.Died += OnDied;
+                m_currentEnemies.Add(enemy);
             }
         }
 

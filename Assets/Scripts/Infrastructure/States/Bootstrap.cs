@@ -1,18 +1,30 @@
 using Entities.Enemies;
+using Infrastructure.States;
+using Players;
 using UnityEngine;
 using static StateMashine;
 
-public class Bootstrap : MonoBehaviour
+namespace Infrastructure
 {
-    [SerializeField] private EnemySpawner m_spawner;
-    [SerializeField] private MainMenuView m_menuView;
-    private void Awake()
+    public class Bootstrap : MonoBehaviour
     {
-        var stateMachine = new StateMashine();
-        stateMachine.Initialize(
-            new MainMenuState(stateMachine, m_menuView),
-            new GamePlayState(stateMachine),
-            new PauseMenuState(stateMachine),
-            new DeadState(stateMachine));
+        [SerializeField] private BoostrapState m_bootStrapState;
+        [SerializeField] private DeadMenuView m_deadMenuView;
+        [SerializeField] private EnemySpawner m_enemySpawner;
+        [SerializeField] private PlayerController m_playerController;
+
+        private void Awake()
+        {
+            var stateMachine = new StateMashine();
+            m_bootStrapState.(stateMachine);
+
+            stateMachine.Initialize(
+                m_bootStrapState,
+                new PauseMenuState(stateMachine),
+                new DeadState(stateMachine, m_deadMenuView),
+                new GamePlayState(stateMachine, m_enemySpawner, m_playerController));
+
+            stateMachine.ChangedState<BootstrapState>();
+        }
     }
 }

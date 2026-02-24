@@ -1,6 +1,8 @@
+using Entities.Enemies;
 using Players;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StateMashine : MonoBehaviour
@@ -36,18 +38,28 @@ public class StateMashine : MonoBehaviour
         public MainMenuState(StateMashine stateMashine, MainMenuView mainMenuView)
         {
             m_stateMashine = stateMashine;
-            m_mainMenuView = mainMenuView;
+            m_mainMenuView = mainMenuView; 
+
+            m_mainMenuView.gameObject.SetActive(false);
         }
 
         public void Enter()
         {
             m_mainMenuView.gameObject.SetActive(true);
             m_mainMenuView.PlayClicked += OnPlayClicked;
+            m_mainMenuView.ExitClicked += OnExitClecked;
         }
 
-        private void OnPlayClicked()
+        private void OnPlayClicked() =>
+            m_stateMashine.ChangedState<GamePlayState>();
+
+        private void OnExitClecked()
         {
-            throw new NotImplementedException();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+
+            Application.Quit();
         }
 
         public void Exit()
@@ -57,20 +69,34 @@ public class StateMashine : MonoBehaviour
     }
     public class GamePlayState : IState
     {
-        private readonly StateMashine m_stateMashine;
+        private readonly StateMachine m_stateMachine;
+        private readonly EnemySpawner m_enemySpawner;
+        private readonly PlayerController m_playerController;
 
-        public GamePlayState(StateMashine stateMashine)
+        public GamePlayState(
+            StateMachine stateMachine,
+            EnemySpawner enemySpawner,
+            PlayerController playerController)
         {
-            m_stateMashine = stateMashine;
+            m_stateMachine = stateMachine;
+            m_enemySpawner = enemySpawner;
+            m_playerController = playerController;
         }
+
         public void Enter()
         {
-            throw new NotImplementedException();
+            m_enemySpawner.Spawn();
+            m_playerController.health.Died += OnDied;
         }
 
         public void Exit()
         {
-            throw new NotImplementedException();
+            m_playerController.health.Died -= OnDied;
+        }
+
+        private void OnDied()
+        {
+            m_stateMachine.ChangedState<DeadState>();
         }
     }
     public class PauseMenuState : IState
@@ -94,19 +120,26 @@ public class StateMashine : MonoBehaviour
     public class DeadState : IState
     {
         private readonly StateMashine m_stateMashine;
+        private readonly DeadMenuView m_deadView;
 
-        public DeadState(StateMashine stateMashine)
+        public DeadState(StateMashine stateMashine, DeadMenuView deadView)
         {
             m_stateMashine = stateMashine;
+            m_deadView = deadView;
         }
         public void Enter()
         {
-            throw new NotImplementedException();
+            m_deadView.GoToMenuClicked += OnGoToMenuClicked;
+            m_deadView.gameObject.SetActive(true);
         }
+
+        private void OnGoToMenuClicked() =>
+            m_stateMashine.ChangedState<MainMenuState>();
 
         public void Exit()
         {
-            throw new NotImplementedException();
+            m_deadView.GoToMenuClicked -= OnGoToMenuClicked;
+            m_deadView.gameObject.SetActive(false);
         }
     }
 

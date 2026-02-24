@@ -30,6 +30,7 @@ public class MainMenuView : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        m_playButton.onClick.RemoveListener(OnPlayClicked);
+        m_existButton.onClick.RemoveListener(OnExitClecked);
     }
 }
