@@ -1,4 +1,6 @@
+using Cameras;
 using Entities.Enemies;
+using Markers;
 using Players;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ public class StateMashine : MonoBehaviour
     private IState m_state;
     private Dictionary<Type, IState> m_states = new();
 
-    public void Initialize(IState[] states)
+    public void Initialize(params IState[] states)
     {
         if (m_states.Count > 0) return;
 
@@ -29,7 +31,7 @@ public class StateMashine : MonoBehaviour
         }
         m_state.Enter();
     }
-
+}
     public class MainMenuState : IState
     {
         private readonly StateMashine m_stateMashine;
@@ -70,29 +72,37 @@ public class StateMashine : MonoBehaviour
     public class GamePlayState : IState
     {
         private readonly StateMashine m_stateMachine;
+        private readonly CameraFoll m_cameraFollow;
         private readonly EnemySpawner m_enemySpawner;
-        private readonly PlayerController m_playerController;
+        private readonly AimLineMarker m_aimLineMarker;
+        private readonly TargetMarkerObserver m_targetMarkerObserver;
+
+        private PlayerController m_playerController;
 
         public GamePlayState(
             StateMashine stateMachine,
+            CameraFoll cameraFollow,
             EnemySpawner enemySpawner,
-            PlayerController playerController)
+            AimLineMarker aimLineMarker,
+            TargetMarkerObserver targetMarkerObserver)
         {
             m_stateMachine = stateMachine;
+            m_cameraFollow = cameraFollow;
             m_enemySpawner = enemySpawner;
-            m_playerController = playerController;
+            m_aimLineMarker = aimLineMarker;
+            m_targetMarkerObserver = targetMarkerObserver;
         }
 
         public void Enter()
         {
-            ServiceLocator.Register(m_mouse);
+            var playerPosition = ServiceLocator.Resolve<PlayerSpawnPoint>();
+            ServiceLocator.Resolve<IPlayerFactorySettings>().position = playerPosition.transform.position;
+            m_playerController = ServiceLocator.Resolve<IPlayerFactory>().Create().GetComponent<PlayerController>();
 
-            var playerFactory = new PlayerFactory("Prefabs/Player");
+            m_cameraFollow.SetTarget(m_playerController.transform);
+            m_aimLineMarker.Initialize(m_playerController.transform);
+            m_targetMarkerObserver.Initialize(m_playerController.GetComponent<PlayerMovement>());
 
-            ServiceLocator.Resolve<IPlayerFactorySettings>().position = m_playerController;
-            ServiceLocator.Resolve<PlayerFactory>.Creat(playerFactory);
-
-            ServiceLocator.Register(m_playerController);
             m_enemySpawner.Spawn();
             m_playerController.health.Died += OnDied;
         }
@@ -102,8 +112,10 @@ public class StateMashine : MonoBehaviour
             m_playerController.health.Died -= OnDied;
         }
 
-        private void OnDied() =>
-            m_stateMachine.ChangedState<MainMenuState>();
+        private void OnDied()
+        {
+            m_stateMachine.ChangedState<DeadState>();
+        }
     }
     public class PauseMenuState : IState
     {
@@ -148,22 +160,6 @@ public class StateMashine : MonoBehaviour
             m_deadView.gameObject.SetActive(false);
         }
     }
-
-    public class BoostrapState : MonoBehaviour, IState 
-    {
-        [SerializeField] private MouseResolver m_mouseResolver;
-
-        public void Enter()
-        {
-            ServiceLocator.Register(m_mouseResolver);
-        }
-
-        public void Exit()
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
 
 public interface IState
 {

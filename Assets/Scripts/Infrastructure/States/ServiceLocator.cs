@@ -5,18 +5,22 @@ using UnityEngine;
 public class ServiceLocator : MonoBehaviour
 {
     public static ServiceLocator m_serviceLocator;
-    private Dictionary<Type, object> m_servise = new();
+
+    private Dictionary<Type, object> m_servises = new();
+
     public static void Register <T>(T instance)
     {
         m_serviceLocator ??= new ServiceLocator();
-        m_serviceLocator.m_servise.Add(typeof(T), instance);
+        m_serviceLocator.m_servises.Add(typeof(T), instance);
     }
     public static T Resolve<T>()
+            where T : class
     {
-        if(m_serviceLocator is null)
+        if (m_serviceLocator == null)
         {
-            throw new NullReferenceException("Servise locator is null");
+            throw new NullReferenceException("ServiceLocator is null");
         }
-        return m_serviceLocator.m_servise[typeof(T)] as T;
+
+        return m_serviceLocator.m_servises[typeof(T)] as T;
     }
 }

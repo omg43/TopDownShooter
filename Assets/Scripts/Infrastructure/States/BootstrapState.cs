@@ -1,5 +1,4 @@
 using Players;
-using System.IO;
 using UnityEngine;
 using static StateMashine;
 
@@ -21,10 +20,11 @@ namespace Infrastructure.States
         {
             ServiceLocator.Register(m_mouseResolver);
 
-            var playerFactory = new PlayerFactory("Prefabs/Player");
-
-            ServiceLocator.Register<PlayerFactory>(playerFactory);
+            var playerFactory = new PlayerFactory(GlobalConstants.Paths.PlayerPrefab);
+            ServiceLocator.Register<IPlayerFactory>(playerFactory);
             ServiceLocator.Register<IPlayerFactorySettings>(playerFactory);
+
+            ServiceLocator.Register<PlayerSpawnPoint>(m_playerSpawnPoint);
 
             m_stateMachine.ChangedState<GamePlayState>();
         }

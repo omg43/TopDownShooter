@@ -24,6 +24,11 @@ namespace Markers
             }
         }
 
+        public void Initialize(Transform playerTransform)
+        {
+            m_playerTransform = playerTransform;
+        }
+
         private void Awake()
         {
             m_lineRenderer.positionCount = 2;
