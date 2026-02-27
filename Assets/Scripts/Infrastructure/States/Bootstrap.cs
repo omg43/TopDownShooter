@@ -13,7 +13,6 @@ namespace Infrastructure
         [SerializeField] private BootstrapState m_bootStrapState;
         [SerializeField] private DeadMenuView m_deadMenuView;
         [SerializeField] private EnemySpawner m_enemySpawner;
-        [SerializeField] private PlayerController m_playerController;
         [SerializeField] private AimLineMarker m_aimLineMarker;
         [SerializeField] private CameraFoll m_cameraFollow;
         [SerializeField] private TargetMarkerObserver m_targetMarkerObserver;

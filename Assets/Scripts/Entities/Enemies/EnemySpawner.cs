@@ -11,7 +11,6 @@ namespace Entities.Enemies
         [SerializeField] private EnemyData[] m_data;
         [SerializeField] private Enemy[] m_enemies;
         [SerializeField] private Transform[] m_spawnPoints;
-        [SerializeField] private Transform m_playerTransform;
 
         private List<Enemy> m_currentEnemies = new();
 
@@ -37,7 +36,7 @@ namespace Entities.Enemies
                 var enemyData = GetEnemyData();
 
                 var enemyInstance = Instantiate(enemy, spawnPoint);
-                enemyInstance.Initialize(enemyData, m_playerTransform);
+                enemyInstance.Initialize(enemyData, playerTransform);
 
                 enemyInstance.Died += OnDied;
                 m_currentEnemies.Add(enemy);

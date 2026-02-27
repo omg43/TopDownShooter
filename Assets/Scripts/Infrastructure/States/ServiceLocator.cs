@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ServiceLocator : MonoBehaviour
+public class ServiceLocator : ScriptableObject
 {
     public static ServiceLocator m_serviceLocator;
 
     private Dictionary<Type, object> m_servises = new();
 
-    public static void Register <T>(T instance)
+    public static void Register<T>(T instance)
+            where T : class
     {
         m_serviceLocator ??= new ServiceLocator();
         m_serviceLocator.m_servises.Add(typeof(T), instance);

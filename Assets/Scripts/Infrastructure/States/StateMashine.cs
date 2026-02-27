@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StateMashine : MonoBehaviour
 {
@@ -32,45 +33,8 @@ public class StateMashine : MonoBehaviour
         m_state.Enter();
     }
 }
-    public class MainMenuState : IState
-    {
-        private readonly StateMashine m_stateMashine;
-        private readonly MainMenuView m_mainMenuView;
-
-        public MainMenuState(StateMashine stateMashine, MainMenuView mainMenuView)
-        {
-            m_stateMashine = stateMashine;
-            m_mainMenuView = mainMenuView; 
-
-            m_mainMenuView.gameObject.SetActive(false);
-        }
-
-        public void Enter()
-        {
-            m_mainMenuView.gameObject.SetActive(true);
-            m_mainMenuView.PlayClicked += OnPlayClicked;
-            m_mainMenuView.ExitClicked += OnExitClecked;
-        }
-
-        private void OnPlayClicked() =>
-            m_stateMashine.ChangedState<GamePlayState>();
-
-        private void OnExitClecked()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.ExitPlaymode();
-#endif
-
-            Application.Quit();
-        }
-
-        public void Exit()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    public class GamePlayState : IState
-    {
+public class GamePlayState : IState
+{
         private readonly StateMashine m_stateMachine;
         private readonly CameraFoll m_cameraFollow;
         private readonly EnemySpawner m_enemySpawner;
@@ -152,14 +116,15 @@ public class StateMashine : MonoBehaviour
         }
 
         private void OnGoToMenuClicked() =>
-            m_stateMashine.ChangedState<MainMenuState>();
+            SceneManager.LoadScene(GlobalConstants.Scenes.Main);
 
-        public void Exit()
+    public void Exit()
         {
             m_deadView.GoToMenuClicked -= OnGoToMenuClicked;
             m_deadView.gameObject.SetActive(false);
         }
     }
+
 
 public interface IState
 {

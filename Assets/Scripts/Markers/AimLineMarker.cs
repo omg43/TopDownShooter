@@ -7,7 +7,6 @@ namespace Markers
     public class AimLineMarker : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] private Transform m_playerTransform;
         [SerializeField] private LineRenderer m_lineRenderer;
         [SerializeField] private MouseResolver m_mouseResolver;
 
@@ -15,6 +14,8 @@ namespace Markers
         [SerializeField] [Min(0)] private float m_zOffset = 0.5f;
         [SerializeField] [Min(0)] private float m_lineWidth = 0.1f;
         [SerializeField] [Min(0)] private float m_disableDistance = 1f;
+
+        private Transform m_playerTransform;
 
         private void OnValidate()
         {
