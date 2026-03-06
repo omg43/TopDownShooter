@@ -16,6 +16,7 @@ namespace Infrastructure
         [SerializeField] private AimLineMarker m_aimLineMarker;
         [SerializeField] private CameraFoll m_cameraFollow;
         [SerializeField] private TargetMarkerObserver m_targetMarkerObserver;
+        [SerializeField] private PauseMenuView m_pauseMenuView;
 
         private void Awake()
         {
@@ -24,7 +25,7 @@ namespace Infrastructure
 
             stateMachine.Initialize(
                 m_bootStrapState,
-                new PauseMenuState(stateMachine),
+                new PauseMenuState(stateMachine, m_pauseMenuView),
                 new DeadState(stateMachine, m_deadMenuView),
                 new GamePlayState(
                     stateMachine,

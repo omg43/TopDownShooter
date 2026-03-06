@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Background
   targetImage: {fileID: 564341228}
-  speed: 1
+  speed: 3.58
   changeRed: 1
   changeGreen: 1
   changeBlue: 1

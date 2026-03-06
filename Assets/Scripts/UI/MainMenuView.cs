@@ -8,6 +8,7 @@ public class MainMenuView : MonoBehaviour
     public event Action PlayClicked;
     public event Action ExitClicked;
 
+    [SerializeField] private Loading m_loading;
     [SerializeField] private Button m_playButton;
     [SerializeField] private Button m_existButton;
 
@@ -19,11 +20,12 @@ public class MainMenuView : MonoBehaviour
 
     private void OnExitClecked()
     {
-        throw new NotImplementedException();
+        Application.Quit();
     }
 
     private void OnPlayClicked()
     {
+        m_loading.LoadScene(GlobalConstants.Scenes.Game);
         PlayClicked?.Invoke();
         SceneManager.LoadScene(GlobalConstants.Scenes.Game);
     }
