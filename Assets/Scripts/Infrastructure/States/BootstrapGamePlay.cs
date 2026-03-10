@@ -8,7 +8,7 @@ using static StateMashine;
 
 namespace Infrastructure
 {
-    public class Bootstrap : MonoBehaviour
+    public class BootstrapGamePlay : MonoBehaviour
     {
         [SerializeField] private BootstrapState m_bootStrapState;
         [SerializeField] private DeadMenuView m_deadMenuView;

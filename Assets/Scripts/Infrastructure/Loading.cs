@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,11 @@ public class Loading : MonoBehaviour
     public void LoadScene(string nameScene)
     {
         StartCoroutine(LoadScenAsyn(nameScene));
+    }
+
+    internal void DespawnAll()
+    {
+        throw new NotImplementedException();
     }
 
     private void Awake()

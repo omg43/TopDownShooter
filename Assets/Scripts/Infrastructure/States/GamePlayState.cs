@@ -13,20 +13,6 @@ public class GamePlayState : IState
 
         private PlayerController m_playerController;
 
-        public GamePlayState(
-            StateMashine stateMachine,
-            CameraFoll cameraFollow,
-            EnemySpawner enemySpawner,
-            AimLineMarker aimLineMarker,
-            TargetMarkerObserver targetMarkerObserver)
-        {
-            m_stateMachine = stateMachine;
-            m_cameraFollow = cameraFollow;
-            m_enemySpawner = enemySpawner;
-            m_aimLineMarker = aimLineMarker;
-            m_targetMarkerObserver = targetMarkerObserver;
-        }
-
         public void Enter()
         {
             var playerPosition = ServiceLocator.Resolve<PlayerSpawnPoint>();

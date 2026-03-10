@@ -24,4 +24,6 @@ public class ServiceLocator : ScriptableObject
 
         return m_serviceLocator.m_servises[typeof(T)] as T;
     }
+    public void Clear() =>
+        m_serviceLocator?.m_servises.Clear();
 }
