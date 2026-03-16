@@ -17,16 +17,12 @@ public class ServiceLocator
     public static T Resolve<T>()
         where T : class
     {
-        if (m_serviceLocator == null)
-        {
-            throw new NullReferenceException("ServiceLocator is null");
-        }
+        if (m_serviceLocator is null)
+            throw new NullReferenceException("Service locator is null");
 
         return m_serviceLocator.m_services[typeof(T)] as T;
     }
 
-    public static void Clear()
-    {
+    public static void Clear() =>
         m_serviceLocator?.m_services.Clear();
-    }
 }

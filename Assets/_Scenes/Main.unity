@@ -2366,7 +2366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuView
   m_playButton: {fileID: 1988714454}
-  m_existButton: {fileID: 1940501478}
+  m_exitButton: {fileID: 1940501478}
 --- !u!114 &1988714454 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1579338045758349645, guid: f08f8f328fdb32b43b895117932bbf47, type: 3}
@@ -2613,7 +2613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8159319142023882990, guid: e4159e24d0b3b9a419ee34da95fb733c, type: 3}
       propertyPath: m_Name
-      value: Settings (1)
+      value: Settings
       objectReference: {fileID: 0}
     - target: {fileID: 8159319142023882990, guid: e4159e24d0b3b9a419ee34da95fb733c, type: 3}
       propertyPath: m_IsActive
@@ -2824,7 +2824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1209477744485279659
 RectTransform:
   m_ObjectHideFlags: 0
