@@ -12,11 +12,11 @@ public class GamePlayState : IState
     private PlayerController m_playerController;
 
     public GamePlayState(
-            StateMashine stateMachine,
-            CameraFollow cameraFollow)
+        StateMashine stateMachine,
+        CameraFollow cameraFollow)
     {
-        m_stateMachine = stateMachine;
         m_cameraFollow = cameraFollow;
+        m_stateMachine = stateMachine;
     }
 
     public void Enter()
@@ -36,13 +36,11 @@ public class GamePlayState : IState
     }
 
     public void Exit()
-        {
-            m_playerController.health.Died -= OnDied;
-            m_playerController = null;
+    {
+        m_playerController.health.Died -= OnDied;
+        m_playerController = null;
     }
 
-        private void OnDied()
-        {
-            m_stateMachine.ChangedState<DeadState>();
-        }
-    }
+    private void OnDied() =>
+        m_stateMachine.ChangedState<DeadState>();
+}

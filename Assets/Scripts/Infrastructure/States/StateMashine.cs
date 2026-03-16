@@ -14,7 +14,7 @@ public class StateMashine : MonoBehaviour
 
         foreach (var state in states)
         {
-            m_states.Add(state.GetType(), state);
+            m_states.Add(state.GetType(), state);   
         }
     }
 

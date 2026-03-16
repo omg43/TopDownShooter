@@ -3,40 +3,41 @@ using Entities.Enemies;
 using Markers;
 using Players;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 public class GamePlayEntryState : IState
 {
     private PlayerController m_playerController;
-    private StateMashine m_stateMachine;
-    private EnemySpawner m_enemySpawner;
-    private AimLineMarker m_aimLineMarker;
-    private TargetMarkerObserver m_targetMarkerObserver;
+    private readonly EnemySpawner m_spawnerEnemy;
+    private readonly StateMashine m_stateMachine;
+    private readonly AimLineMarker m_aimLineMarker;
+    private readonly TargetMarkerObserver m_targetMarkerObserver;
 
     public GamePlayEntryState(
-            StateMashine stateMachine,
-            EnemySpawner enemySpawner,
-            AimLineMarker aimLineMarker,
-            TargetMarkerObserver targetMarkerObserver)
+        StateMashine stateMachine,
+        EnemySpawner spawnerEnemy,
+        AimLineMarker aimLineMarker,
+        TargetMarkerObserver targetMarkerObserver)
     {
+        m_spawnerEnemy = spawnerEnemy;
         m_stateMachine = stateMachine;
-        m_enemySpawner = enemySpawner;
         m_aimLineMarker = aimLineMarker;
         m_targetMarkerObserver = targetMarkerObserver;
     }
+
     public void Enter()
     {
         var playerPosition = ServiceLocator.Resolve<PlayerSpawnPoint>();
         ServiceLocator.Resolve<IPlayerFactorySettings>().position = playerPosition.transform.position;
-        m_playerController = ServiceLocator.Resolve<IPlayerFactory>().Create().GetComponent<PlayerController>();
+        m_playerController = ServiceLocator.Resolve<IPlayerFactory>().Create();
 
         m_aimLineMarker.Initialize(m_playerController.transform);
         m_targetMarkerObserver.Initialize(m_playerController.GetComponent<PlayerMovement>());
 
-        m_enemySpawner.Spawn();
+        m_spawnerEnemy.Spawn();
         m_stateMachine.ChangedState<GamePlayState>();
     }
 
-    public void Exit()
-    {
-    }
+    public void Exit() { }
+
 }
