@@ -1,29 +1,32 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class ServiceLocator : ScriptableObject
+public class ServiceLocator
 {
-    public static ServiceLocator m_serviceLocator;
+    private static ServiceLocator m_serviceLocator;
 
-    private Dictionary<Type, object> m_servises = new();
+    private Dictionary<Type, object> m_services = new();
 
     public static void Register<T>(T instance)
-            where T : class
+        where T : class
     {
         m_serviceLocator ??= new ServiceLocator();
-        m_serviceLocator.m_servises.Add(typeof(T), instance);
+        m_serviceLocator.m_services.Add(typeof(T), instance);
     }
+
     public static T Resolve<T>()
-            where T : class
+        where T : class
     {
         if (m_serviceLocator == null)
         {
             throw new NullReferenceException("ServiceLocator is null");
         }
 
-        return m_serviceLocator.m_servises[typeof(T)] as T;
+        return m_serviceLocator.m_services[typeof(T)] as T;
     }
-    public void Clear() =>
-        m_serviceLocator?.m_servises.Clear();
+
+    public static void Clear()
+    {
+        m_serviceLocator?.m_services.Clear();
+    }
 }

@@ -2,35 +2,47 @@ using Cameras;
 using Entities.Enemies;
 using Markers;
 using Players;
+using UnityEngine.InputSystem;
 
 public class GamePlayState : IState
 {
-        private readonly StateMashine m_stateMachine;
-        private readonly CameraFoll m_cameraFollow;
-        private readonly EnemySpawner m_enemySpawner;
-        private readonly AimLineMarker m_aimLineMarker;
-        private readonly TargetMarkerObserver m_targetMarkerObserver;
+    private readonly StateMashine m_stateMachine;
+    private readonly CameraFollow m_cameraFollow;
+    private readonly EnemySpawner m_enemySpawner;
+    private readonly AimLineMarker m_aimLineMarker;
+    private readonly TargetMarkerObserver m_targetMarkerObserver;
 
-        private PlayerController m_playerController;
+    private PlayerController m_playerController;
 
-        public void Enter()
+    public GamePlayState(
+            StateMashine stateMachine,
+            CameraFollow cameraFollow)
+    {
+        m_stateMachine = stateMachine;
+        m_cameraFollow = cameraFollow;
+    }
+
+    public void Enter()
+    {
+        m_playerController = ServiceLocator.Resolve<IPlayerFactory>().Create();
+
+        m_cameraFollow.SetTarget(m_playerController.transform);
+        m_playerController.health.Died += OnDied;
+    }
+
+    public void Update()
+    {
+        if (Keyboard.current[Key.Escape].wasPressedThisFrame)
         {
-            var playerPosition = ServiceLocator.Resolve<PlayerSpawnPoint>();
-            ServiceLocator.Resolve<IPlayerFactorySettings>().position = playerPosition.transform.position;
-            m_playerController = ServiceLocator.Resolve<IPlayerFactory>().Create().GetComponent<PlayerController>();
-
-            m_cameraFollow.SetTarget(m_playerController.transform);
-            m_aimLineMarker.Initialize(m_playerController.transform);
-            m_targetMarkerObserver.Initialize(m_playerController.GetComponent<PlayerMovement>());
-
-            m_enemySpawner.Spawn();
-            m_playerController.health.Died += OnDied;
+            m_stateMachine.ChangedState<PauseMenuState>();
         }
+    }
 
-        public void Exit()
+    public void Exit()
         {
             m_playerController.health.Died -= OnDied;
-        }
+            m_playerController = null;
+    }
 
         private void OnDied()
         {

@@ -8,39 +8,48 @@ using UnityEngine.UI;
 public class Loading : MonoBehaviour
 {
     [SerializeField] private Image m_loading;
-    public void LoadScene(string nameScene)
-    {
-        StartCoroutine(LoadScenAsyn(nameScene));
-    }
 
-    internal void DespawnAll()
-    {
-        throw new NotImplementedException();
-    }
+    private static Loading m_instance;
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-
-    }
-
-    private IEnumerator LoadScenAsyn(string scenName)
-    {
-        m_loading.fillAmount = 0;
-
-        AsyncOperation operation =  SceneManager.LoadSceneAsync(scenName);
-        yield return operation;
-
-        m_loading.fillAmount = 0.5f;
-        const int steps = 10;
-        var delta = 1 - m_loading.fillAmount;
-
-        for (var i = 0; i < steps; i++)
+        if (m_instance != null)
         {
-            yield return new WaitForSeconds(0.5f);
-            m_loading.fillAmount += delta / steps;
+            Destroy(m_instance.gameObject);
+            m_instance = null;
         }
 
+        m_instance = this;
+        DontDestroyOnLoad(target: this);
+        gameObject.SetActive(false);
+    }
+
+    public void LoadScene(string sceneName)
+    {
         gameObject.SetActive(true);
+        StartCoroutine(LoadSceneAsync(sceneName));
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        m_loading.fillAmount = 0f;
+
+        const int steps = 10;
+        const float maxProgress = 0.5f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSecondsRealtime(maxProgress);
+            m_loading.fillAmount += maxProgress * 2 / steps;
+        }
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+
+        yield return operation;
+        yield return new WaitForEndOfFrame();
+
+        m_loading.fillAmount = 1f;
+        gameObject.SetActive(false);
     }
 }
+

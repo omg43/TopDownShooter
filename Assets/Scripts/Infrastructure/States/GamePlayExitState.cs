@@ -1,20 +1,19 @@
+using Entities.Enemies;
 using UnityEngine;
 
 public class GamePlayExitState : IState
 {
-    private readonly Loading m_loading;
-
     public void Enter()
     {
-
-        var spawner = ServiceLocator.Resolve<Loading>();
+        var loading = ServiceLocator.Resolve<Loading>();
+        var spawner = ServiceLocator.Resolve<EnemySpawner>();
         spawner.DespawnAll();
 
-        m_loading.LoadScene(GlobalConstants.Scenes.Main);
+        loading.LoadScene(GlobalConstants.Scenes.Main);
     }
 
     public void Exit()
-    {
-        throw new System.NotImplementedException();
+    { 
+
     }
 }
