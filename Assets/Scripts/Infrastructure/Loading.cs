@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public sealed class Loading : MonoBehaviour
 {
