@@ -39,6 +39,11 @@ namespace Markers
 
         private void LateUpdate()
         {
+            if (m_playerTransform == null)
+            {
+                return;
+            }
+
             var playerPos = m_playerTransform.position;
             var end = GetAimPosition();
 

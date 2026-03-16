@@ -31,7 +31,7 @@ namespace Infrastructure
                 new PauseMenuState(m_stateMachine, m_pauseMenuView),
                 new DeadState(m_stateMachine, m_deadMenuView),
                 new GamePlayState(m_stateMachine, m_cameraFollow),
-                new GamePlayExitState(),
+                new GamePlayExitState(m_enemySpawner),
                 new GamePlayEntryState(
                     m_stateMachine,
                     m_enemySpawner,
@@ -40,5 +40,7 @@ namespace Infrastructure
 
             m_stateMachine.ChangedState<BootstrapState>();
         }
+        private void Update() =>
+            m_stateMachine.Update();
     }
 }

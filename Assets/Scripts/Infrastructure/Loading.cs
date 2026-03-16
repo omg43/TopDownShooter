@@ -32,18 +32,16 @@ public class Loading : MonoBehaviour
 
     private IEnumerator LoadSceneAsync(string sceneName)
     {
-        m_loading.fillAmount = 0f;
-
+        m_loading.fillAmount = 0;
         const int steps = 10;
         const float maxProgress = 0.5f;
-
-        for (int i = 0; i < steps; i++)
+        for (var i = 0; i < steps; i++)
         {
-            yield return new WaitForSecondsRealtime(maxProgress);
-            m_loading.fillAmount += maxProgress * 2 / steps;
+            yield return new WaitForSecondsRealtime(0.5f);
+            m_loading.fillAmount += maxProgress / steps;
         }
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        var operation = SceneManager.LoadSceneAsync(sceneName);
 
         yield return operation;
         yield return new WaitForEndOfFrame();

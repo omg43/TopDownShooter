@@ -8,9 +8,6 @@ public class GamePlayState : IState
 {
     private readonly StateMashine m_stateMachine;
     private readonly CameraFollow m_cameraFollow;
-    private readonly EnemySpawner m_enemySpawner;
-    private readonly AimLineMarker m_aimLineMarker;
-    private readonly TargetMarkerObserver m_targetMarkerObserver;
 
     private PlayerController m_playerController;
 

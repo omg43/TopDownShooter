@@ -226,50 +226,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1548031802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &209183411
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 209183412}
-  - component: {fileID: 209183413}
-  m_Layer: 0
-  m_Name: StateMachine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &209183412
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 209183411}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1959399294}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &209183413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 209183411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fb094ad413fa5349a5ce49e0bb528c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StateMashine
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2950,7 +2906,6 @@ Transform:
   - {fileID: 1791234058}
   - {fileID: 1852708551}
   - {fileID: 1548031802}
-  - {fileID: 209183412}
   - {fileID: 6221734437959863257}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3553,6 +3508,7 @@ MonoBehaviour:
   m_aimLineMarker: {fileID: 1852708552}
   m_cameraFollow: {fileID: 330585548}
   m_targetMarkerObserver: {fileID: 1024899840}
+  m_pauseMenuView: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

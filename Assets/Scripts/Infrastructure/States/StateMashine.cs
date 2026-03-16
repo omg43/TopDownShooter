@@ -18,6 +18,11 @@ public class StateMashine : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        m_state?.Update();
+    }
+
     public void ChangedState<T>()
         where T : IState
     {

@@ -24,7 +24,7 @@ public class PlayerFactory : IPlayerFactorySettings, IPlayerFactory
     public PlayerFactory(string mPath)
     {
         m_path = mPath;
-    }  
+    }
 
     public PlayerController Create()
     {
@@ -33,30 +33,22 @@ public class PlayerFactory : IPlayerFactorySettings, IPlayerFactory
             return m_playerInstance;
         }
 
-        if (m_playerPref == null)
+        if (m_playerPref is null)
         {
             var playerPrefab = Resources.Load<GameObject>(m_path);
             m_playerPref = playerPrefab.GetComponent<PlayerController>();
         }
-        
+
         m_playerInstance = Object.Instantiate(m_playerPref, ((IPlayerFactorySettings)this).position, Quaternion.identity);
+        m_playerInstance.Initialize(Camera.main, ServiceLocator.Resolve<MouseResolver>());
+
         return m_playerInstance;
     }
 
-    public void Release(PlayerController controller)
+    public void Release()
     {
-        Object.Destroy(controller.gameObject);
+        Object.Destroy(m_playerInstance.gameObject);
         m_playerInstance = null;
-    }
-
-    PlayerController IPlayerFactory.Create()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void IPlayerFactory.Release()
-    {
-        throw new System.NotImplementedException();
     }
 }
 

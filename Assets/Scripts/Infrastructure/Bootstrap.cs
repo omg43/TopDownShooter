@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(-500)]
-public class Boostrap : MonoBehaviour
+public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private Loading m_loading;
 

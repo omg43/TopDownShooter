@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PauseMenuView : MonoBehaviour
 {
-    public event Action CountieClicked;
+    public event Action ContinueClicked;
     public event Action MainMenuClicked;
 
     [SerializeField] private Button m_continue;
@@ -12,17 +12,19 @@ public class PauseMenuView : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        m_continue.onClick.AddListener(OnContinueClick);
+        m_mainMenu.onClick.AddListener(OnMainMenuClick);
     }
 
     private void OnDisable()
     {
-        
+        m_continue.onClick.RemoveListener(OnContinueClick);
+        m_mainMenu.onClick.RemoveListener(OnMainMenuClick);
     }
 
-    private void OnCountieClicked() =>
-        m_continue.onClick.Invoke();
+    private void OnContinueClick() =>
+        ContinueClicked?.Invoke();
 
-    private void OnMainMenuClicked() => 
-        m_mainMenu.onClick.Invoke();
+    private void OnMainMenuClick() =>
+        MainMenuClicked?.Invoke();
 }
